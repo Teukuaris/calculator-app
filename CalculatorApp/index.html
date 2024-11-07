@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Professional Calculator</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* General Styles */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #1e1e1e; /* Default dark background */
+        color: white; /* Default text color */
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      /* Calculator Wrapper */
+      .calculator-wrapper {
+        width: 300px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+      }
+
+      /* Header Styles */
+      .calculator-header {
+        background-color: #2c2c2c;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .calculator-header h1 {
+        font-size: 20px;
+        margin: 0;
+      }
+
+      /* Theme Toggle Styles */
+      .theme-toggle {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+
+      .theme-toggle input {
+        opacity: 0; /* Hide the default checkbox */
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc; /* Background color when off */
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px; /* Height of the toggle knob */
+        width: 26px; /* Width of the toggle knob */
+        left: 4px; /* Positioning of the knob */
+        bottom: 4px;
+        background-color: white; /* Color of the knob */
+        border-radius: 50%; /* Make it round */
+        transition: 0.4s; /* Smooth transition */
+      }
+
+      input:checked + .slider {
+        background-color: #4caf50; /* Background color when on */
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(26px); /* Move the knob */
+      }
+
+      /* Display Screen Styles */
+      .display {
+        background-color: #333;
+        padding: 20px;
+        font-size: 32px;
+        text-align: right;
+        border-bottom: 1px solid #444;
+      }
+
+      /* Button Styles */
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .btn {
+        padding: 20px;
+        font-size: 18px;
+        background-color: #444;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .btn:hover {
+        background-color: #555;
+      }
+
+      .btn.function {
+        background-color: #f39c12; /* Distinct color for function buttons */
+      }
+
+      .btn.function:hover {
+        background-color: #e67e22;
+      }
+
+      .btn.equals {
+        background-color: #e74c3c; /* Distinct color for equals button */
+      }
+
+      .btn.equals:hover {
+        background-color: #c0392b;
+      }
+
+      /* Footer Styles */
+      .calculator-footer {
+        background-color: #2c2c2c;
+        text-align: center;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Calculator Wrapper -->
+    <div class="calculator-wrapper">
+      <!-- Calculator Header with Theme Toggle -->
+      <header class="calculator-header">
+        <h1>Professional Calculator</h1>
+        <label class="theme-toggle">
+          <input
+            type="checkbox"
+            id="theme-switch"
+            aria-label="Toggle dark mode"
+            onclick="toggleTheme()"
+          />
+          <span class="slider"></span>
+        </label>
+      </header>
+
+      <!-- Calculator Body -->
+      <div class="calculator">
+        <!-- Display Screen -->
+        <div class="display" id="display" aria-live="polite" role="textbox">
+          0
+        </div>
+
+        <!-- Buttons Container -->
+        <div class="buttons">
+          <!-- Functional and Operator Buttons -->
+          <button
+            class="btn function"
+            onclick="clearDisplay()"
+            aria-label="Clear"
+          >
+            C
+          </button>
+          <button
+            class="btn function"
+            onclick="deleteLast()"
+            aria-label="Delete last"
+          >
+            ⌫
+          </button>
+          <button
+            class="btn function"
+            onclick="insertOperator('/')"
+            aria-label="Divide"
+          >
+            ÷
+          </button>
+          <button
+            class="btn function"
+            onclick="insertOperator('*')"
+            aria-label="Multiply"
+          >
+            ×
+          </button>
+
+          <!-- Numeric Buttons -->
+          <button class="btn" onclick="insertValue('7')" aria-label="7">
+            7
+          </button>
+          <button class="btn" onclick="insertValue('8')" aria-label="8">
+            8
+          </button>
+          <button class="btn" onclick="insertValue('9')" aria-label="9">
+            9
+          </button>
+          <button
+            class="btn function"
+            onclick="insertOperator('-')"
+            aria-label="Subtract"
+          >
+            −
+          </button>
+
+          <button class="btn" onclick="insertValue('4')" aria-label="4">
+            4
+          </button>
+          <button class="btn" onclick="insertValue('5')" aria-label="5">
+            5
+          </button>
+          <button class="btn" onclick="insertValue('6')" aria-label="6">
+            6
+          </button>
+          <button
+            class="btn function"
+            onclick="insertOperator('+')"
+            aria-label="Add"
+          >
+            +
+          </button>
+
+          <button class="btn" onclick="insertValue('1')" aria-label="1">
+            1
+          </button>
+          <button class="btn" onclick="insertValue('2')" aria-label="2">
+            2
+          </button>
+          <button class="btn" onclick="insertValue('3')" aria-label="3">
+            3
+          </button>
+          <button
+            class="btn"
+            onclick="insertValue('.')"
+            aria-label="Decimal point"
+          >
+            .
+          </button>
+          <button
+            class="btn equals"
+            onclick="calculateResult()"
+            aria-label="Equals"
+          >
+            =
+          </button>
+
+          <!-- Repositioned Buttons -->
+          <button class="btn zero" onclick="insertValue('0')" aria-label="0">
+            0
+          </button>
+        </div>
+      </div>
+
+      <!-- Calculator Footer -->
+      <footer class="calculator-footer">
+        <p>Developed by <a href="#">Teuku Ariz</a></p>
+      </footer>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+  </body>
+</html>
